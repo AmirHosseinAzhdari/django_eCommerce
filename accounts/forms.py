@@ -11,11 +11,11 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'mobile_number', 'full_name')
+        fields = ("email", "mobile_number", "full_name")
 
     def clean_password2(self):
         cd = self.cleaned_data
-        if cd['password1'] and cd['password2'] and cd['password1'] != cd['password2']:
+        if cd["password1"] and cd["password2"] and cd["password1"] != cd["password2"]:
             raise ValidationError("Passwords dont match!")
         return cd["password2"]
 
@@ -29,7 +29,8 @@ class UserCreationForm(forms.ModelForm):
 
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField(
-        help_text="You can change password using <a href=\"../password/\">this form</a>")
+        help_text='You can change password using <a href="../password/">this form</a>'
+    )
 
     class Meta:
         model = User
@@ -38,6 +39,16 @@ class UserChangeForm(forms.ModelForm):
 
 class UserRegisterForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
-    full_name = forms.CharField(label="full name", widget=forms.TextInput(attrs={"class": "form-control"}))
-    mobile_number = forms.EmailField(label="phone number", widget=forms.TextInput(attrs={"class": "form-control"}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
+    full_name = forms.CharField(
+        label="full name", widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    mobile_number = forms.EmailField(
+        label="phone number", widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+
+
+class VerifyOtpForm(forms.Form):
+    code = forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control"}))

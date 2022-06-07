@@ -13,7 +13,7 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'mobile_number'  # for authenticate user (must unique True)
+    USERNAME_FIELD = "mobile_number"  # for authenticate user (must unique True)
     REQUIRED_FIELDS = ["email", "full_name"]
 
     def __str__(self):
@@ -36,4 +36,4 @@ class OtpCode(models.Model):
     created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.mobile_number} - {self.code} - {self.created}'
+        return f"{self.mobile_number} - {self.code} - {self.created}"
