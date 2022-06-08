@@ -1,6 +1,6 @@
 from kavenegar import *
 
-API_Key = "Your API key from kavenegar website"
+API_Key = "3379796B756A68786E33785A4458544F7062616E39596C652F5A76314A56454F56447A51416732424E36303D"
 
 
 def send_otp_code(code: int, mobile_number: str) -> None:
