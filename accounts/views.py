@@ -18,19 +18,26 @@ class UserRegisterView(View):
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            random_code = random.randint(1000, 9999)
-            send_otp_code(random_code, form.cleaned_data["mobile_number"])
-            OtpCode.objects.create(
-                mobile_number=form.cleaned_data["mobile_number"], code=random_code
-            )
-            # add user info to session
-            request.session["user_register_info"] = {
-                "mobile_number": form.cleaned_data["mobile_number"],
-                "email": form.cleaned_data["email"],
-                "full_name": form.cleaned_data["full_name"],
-                "password": form.cleaned_data["password"],
-            }
-            messages.success(request, "Registered code sent successfully", "success")
+            if not OtpCode.objects.filter(
+                mobile_number=form.cleaned_data["mobile_number"]
+            ).exists():
+                random_code = random.randint(1000, 9999)
+                send_otp_code(random_code, form.cleaned_data["mobile_number"])
+                OtpCode.objects.create(
+                    mobile_number=form.cleaned_data["mobile_number"], code=random_code
+                )
+                # add user info to session
+                request.session["user_register_info"] = {
+                    "mobile_number": form.cleaned_data["mobile_number"],
+                    "email": form.cleaned_data["email"],
+                    "full_name": form.cleaned_data["full_name"],
+                    "password": form.cleaned_data["password"],
+                }
+                messages.success(
+                    request, "Registered code sent successfully", "success"
+                )
+            else:
+                messages.success(request, "Registered code already sent to you")
             return redirect("accounts:user-verify-code")
         return render(request, "accounts/register.html", {"form": form})
 
