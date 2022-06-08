@@ -42,12 +42,19 @@ class UserRegisterForm(forms.Form):
     full_name = forms.CharField(
         label="full name", widget=forms.TextInput(attrs={"class": "form-control"})
     )
-    mobile_number = forms.EmailField(
+    mobile_number = forms.CharField(
         label="phone number", widget=forms.TextInput(attrs={"class": "form-control"})
     )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
+
+    def clean(self):
+        cd = super().clean()
+        if User.objects.filter(email=cd["email"]).exists():
+            self.add_error("email", "This email is already exist")
+        if User.objects.filter(mobile_number=cd["mobile_number"]).exists():
+            self.add_error("mobile_number", "This mobile number is already exist")
 
 
 class VerifyOtpForm(forms.Form):
